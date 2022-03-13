@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<form action="/" method="POST" id="login-form">
+    <div>
+        <label >Enter your username:</label>
+        <input type="text" name="username" required />
+    </div>
+    <div>
+        <input type="submit" value="Submit" />
+    </div>
+</form>
+
+{% endblock %}
