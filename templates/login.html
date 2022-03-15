@@ -1,14 +1,25 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<form action="/" method="POST" id="login-form">
+<h1>Log In</h1>
+
+<form action="/login" method="POST" id="login-form">
     <div>
         <label >Enter your username:</label>
         <input type="text" name="username" required />
     </div>
     <div>
+        <label >Enter your password:</label>    
+        <input type="password" name="password" required />
+    </div>
+    <div>
         <input type="submit" value="Submit" />
     </div>
 </form>
+
+<div>
+Dont have an account?
+<a href="/signup">Sign Up!</a>
+</div>
 
 {% endblock %}
