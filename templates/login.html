@@ -1,25 +1,48 @@
-{% extends "layout.html" %}
-{% block body %}
+{% extends "layout.html" %} {% block body %}
 
-<h1>Log In</h1>
+<div class="section">
+  <h1 class="title">Log In</h1>
+</div>
 
-<form action="/login" method="POST" id="login-form">
-    <div>
-        <label >Enter your username:</label>
-        <input type="text" name="username" required />
+<div class="container">
+  <form class="box" action="/login" method="POST" id="login-form">
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          name="username"
+          placeholder="Enter your username"
+        />
+      </div>
     </div>
-    <div>
-        <label >Enter your password:</label>    
-        <input type="password" name="password" required />
-    </div>
-    <div>
-        <input type="submit" value="Submit" />
-    </div>
-</form>
 
-<div>
-Dont have an account?
-<a href="/signup">Sign Up!</a>
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control">
+        <input
+          class="input"
+          type="password"
+          name="password"
+          placeholder="********"
+        />
+      </div>
+    </div>
+
+    <button type="submit" value="Submit" class="button is-primary">
+      Log in
+    </button>
+  </form>
+</div>
+
+<div class="section">
+  <p>
+    Dont have an account?
+    <a href="/signup">
+        <strong><u>Sign Up!</u></strong>
+    </a>
+  </p>
 </div>
 
 {% endblock %}

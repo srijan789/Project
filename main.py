@@ -2,6 +2,7 @@ from turtle import tracer
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
+import copy
 
 
 
@@ -49,7 +50,7 @@ class log(db.Model):
     t_id = db.Column(db.Integer, db.ForeignKey(tracker.id), nullable = False)
     timestamp = db.Column(db.String, nullable = False)
     value_1 = db.Column(db.Integer, nullable = False)
-    value_2 = db.Column(db.Integer, nullable = False)
+    value_2 = db.Column(db.Integer)
     weight = db.Column(db.Integer)
     note = db.Column(db.String)
 
@@ -88,7 +89,8 @@ def signup():
         password = request.form.get("password")
         fname = request.form.get("firstname")
         lname = request.form.get("lastname")
-        if (user.query.filter_by(username = username).all() != None):
+
+        if (len(user.query.filter_by(username = username).all()) > 0 ):
                 return render_template("userexists.html")
         usr = user(
             username = username,
@@ -122,7 +124,19 @@ def index():
 def dashboard():
     username = session['user']
 
-    trackers = tracker.query.filter_by(u_id = username)
+    uid = user.query.filter_by(username = username).first().id
+
+    groups = {}
+    trackers = tracker.query.filter_by(u_id = uid).all()
+    for t in trackers:
+        if t.group not in groups.keys():
+            groups[t.group] = [copy.copy(t)]
+        else:
+            groups[t.group].append(copy.copy(t))
+    print(trackers)
+    print(groups.keys(), groups)
+    
+    return render_template("dashboard.html")
 
 if __name__ == "__main__":
     app.debug = True

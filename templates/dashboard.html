@@ -1,6 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<div class="section">
+    <h1 class="title">Trackers</h1>
+    </div>
 
+
+{% for group in group.keys() %}
+
+<div class="box">
+<table class="table">
+    <thread>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thread>
+
+</table>
+</div>
+{% endfor %}
 
 {% endblock %}

@@ -1,35 +1,46 @@
 {% extends "layout.html" %} {% block body %}
 
-<h1>Sign Up</h1>
 
-<form action="/signup" method="POST" id="login-form">
-  <div>
-    <div>
-      <label>Enter your First name:</label>
-      <input type="text" name="firstname" required />
+<div class="section">
+    <h1 class="title">Sign Up</h1>
+    </div>
+    
+    
+    <div class = "container">
+    <form class="box" action="/signup" method="POST" id="signup-form">
+        <div class="field">
+          <label class="label">First name*</label>
+          <div class="control">
+            <input class="input" type="text" name="firstname" placeholder="Enter your first name" required>
+          </div>
+        </div>
+        <div class="field">
+            <label class="label">Last name</label>
+            <div class="control">
+              <input class="input" type="text" name="lastname" placeholder="Enter your last name">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Username*</label>
+            <div class="control">
+              <input class="input" type="text" name="username" placeholder="Enter a username" required>
+            </div>
+        </div>
+        <div class="field">
+          <label class="label">Password*</label>
+          <div class="control">
+            <input class="input" type="password" name="password" placeholder="********" required>
+          </div>
+        </div>
+      
+        <button type="submit" value="Submit" class="button is-primary">Sign Up</button>
+      </form>
+    </div>
+    
+    <div class="section" >
+    Have an account?
+    <a href="/login" ><strong><u>Log In!</u></strong></a>
     </div>
 
-    <div>
-      <label>Enter your Last name:</label>
-      <input type="text" name="lastname" required />
-    </div>
-
-    <div>
-      <label>Enter your username:</label>
-      <input type="text" name="username" required />
-    </div>
-
-    <div>
-      <label>Enter your password:</label>
-      <input type="password" name="password" required />
-    </div>
-  </div>
-  <div>
-    <input type="submit" value="Submit" />
-  </div>
-</form>
-
-<p>have an account?</p>
-<a href="/login">Log in!</a>
 
 {% endblock %}
