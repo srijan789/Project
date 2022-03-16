@@ -16,7 +16,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-groups = ['Chest', 'Triceps', 'Abs', 'Back', 'Biceps', 'Shoulders', 'Cardio']
+group_options = ['Chest', 'Triceps', 'Abs', 'Back', 'Biceps', 'Shoulders', 'Cardio']
 
 
 
@@ -119,9 +119,12 @@ def index():
             return render_template("login.html")
 
 
-
 @app.route('/dashboard')
 def dashboard():
+
+    if 'user' not in session:
+        return redirect(url_for('index'))
+
     username = session['user']
 
     uid = user.query.filter_by(username = username).first().id
@@ -136,7 +139,26 @@ def dashboard():
     print(trackers)
     print(groups.keys(), groups)
     
-    return render_template("dashboard.html")
+    return render_template("dashboard.html", groups = groups)
+
+@app.route('/add_tracker', methods = ['GET', 'POST'])
+def add_tracker():
+    if 'user' not in session:
+        return redirect(url_for('index'))
+
+    if request.method == "GET":
+        username = session['user']
+
+        user_groups = []
+        user_groups.append(group_options)
+
+        uid = user.query.filter_by(username = username).first().id
+        trackers = tracker.query.filter_by(u_id = uid).all()
+        for t in trackers:
+            if t.group not in user_groups:
+                user_groups.append(t.group)
+        
+        return redirect("add_tracker.html")
 
 if __name__ == "__main__":
     app.debug = True

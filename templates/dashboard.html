@@ -2,22 +2,48 @@
 {% block body %}
 
 <div class="section">
-    <h1 class="title">Trackers</h1>
+    <h1 class="title is-1">Trackers</h1>
     </div>
 
+<div class="block">
+    <a href="/add_tracker" class="button is-info is-fullwidth"> <strong>+</strong> Add a Tracker</a>
+</div>
 
-{% for group in group.keys() %}
+{% for group in groups.keys() %}
+
+
 
 <div class="box">
-<table class="table">
+    <div class="block">
+        <h1 class="title is-4" style="color: black;">{{ group }}</h1>
+      </div>
+
+<table class="table", style="margin-left: auto;
+margin-right: auto;">
     <thread>
         <tr>
             <th>Name</th>
             <th>Type</th>
             <th>Description</th>
+            <th>Log</th>
             <th>Actions</th>
         </tr>
-    </thread>
+</thread>
+
+{% for tracker in groups[group] %}
+
+<tr>
+    <td>{{tracker.name}}</td>
+    <td>{{tracker.option}}</td>
+    <td>{{tracker.description}}</td>
+    <td><a class="button is-link" href="/log">Log</a></td>
+    <td><a class="button is-danger" href="/delete">Delete</a>
+    <a class="button is-warning" href="/update">Update</a></td>
+</tr>
+
+
+
+{% endfor %}
 
 </table>
 </div>
