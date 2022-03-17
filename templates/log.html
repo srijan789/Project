@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block body %}
+
+<div class="section">
+    <h1 class="title is-1">Log</h1>
+  </div>
+
+  <form class="box" action="/log" method="POST" id="tracker_form">
+
+    <div class="field">
+        <label class="label">Time</label>
+        <div class="control">
+          <label class="radio">
+            <input type="radio" onclick="set()" name="choose" value="current_time" />
+            Current time
+          </label>
+          <label class="radio">
+            <input type="radio" name="choose" onclick="set()" value="time" />
+            select time
+          </label>
+        </div>
+      </div>
+
+  </form>
+
+
+{% endblock %}

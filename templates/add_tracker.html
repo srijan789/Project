@@ -1,10 +1,127 @@
 {% extends "layout.html" %} {% block body %}
 
-
 <div class="section">
-    <h1 class="title is-1">Add a Tracker</h1>
+  <h1 class="title is-1">Add a Tracker</h1>
 </div>
 
+<form class="box" action="/add_tracker" method="POST" id="tracker_form">
+  <div class="field">
+    <label class="label">Name of tracker</label>
+    <div class="control">
+      <input
+        class="input"
+        name="name"
+        type="text"
+        placeholder="Text input"
+        required
+      />
+    </div>
+  </div>
 
+  <div class="field">
+    <label class="label">Type</label>
+    <div class="control" style="margin-left: auto; margin-right: auto">
+      <label class="radio">
+        <input type="radio" name="type" value="Sets and Reps" required />
+        Sets and Reps
+      </label>
+      <label class="radio">
+        <input type="radio" name="type" value="Minutes" />
+        Minutes
+      </label>
+      <label class="radio">
+        <input type="radio" name="type" value="Seconds" />
+        Seconds
+      </label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Group</label>
+    <div class="control">
+      <label class="radio">
+        <input type="radio" onclick="set()" name="choose" value="existing" />
+        Choose existing
+      </label>
+      <label class="radio">
+        <input type="radio" name="choose" onclick="set()" value="new" />
+        Make a new group
+      </label>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="select block">
+      <select name="group" id="ddgroup" >
+        <option>Select dropdown</option>
+        {% for group in group_options %}
+        <option value="{{group}}">{{group}}</option>
+        {%endfor%}
+      </select>
+    </div>
+
+    <div >
+      <input
+        id="grouptext"
+        class="input"
+        name="group"
+        type="text"
+        placeholder="Name of Tracker"
+        required
+      />
+    </div>
+
+  </div>
+
+
+  <div class="field">
+    <label class="label">Description</label>
+    <div class="control">
+      <textarea
+        class="textarea"
+        placeholder="Description"
+        name="description"
+        maxlength="250"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <button type="submit" class="button is-link">Submit</button>
+    </div>
+    <div class="control">
+      <a href="/" class="button is-link is-light">Cancel</a>
+    </div>
+  </div>
+</form>
+
+<script>
+
+var options = document.getElementsByName("choose");
+
+    function set(){
+        var options = document.getElementsByName("choose");
+        var val = null;
+        for (var o of options){
+            if(o.checked == true){
+                val = o.value
+            }
+        }
+
+        if(val == "existing"){
+            var inp = document.getElementById('grouptext');
+            inp.disabled = true;
+            var dd = document.getElementById("ddgroup");
+            dd.disabled = false;
+        } else {
+            var dd = document.getElementById("ddgroup");
+            dd.disabled = true;
+            var inp = document.getElementById('grouptext');
+            inp.disabled = false;
+        }
+    }
+
+</script>
 
 {% endblock %}

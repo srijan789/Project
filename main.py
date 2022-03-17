@@ -1,3 +1,4 @@
+from crypt import methods
 from turtle import tracer
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -136,8 +137,6 @@ def dashboard():
             groups[t.group] = [copy.copy(t)]
         else:
             groups[t.group].append(copy.copy(t))
-    print(trackers)
-    print(groups.keys(), groups)
     
     return render_template("dashboard.html", groups = groups)
 
@@ -145,12 +144,13 @@ def dashboard():
 def add_tracker():
     if 'user' not in session:
         return redirect(url_for('index'))
-
+    username = session['user']
     if request.method == "GET":
-        username = session['user']
+        
 
         user_groups = []
-        user_groups.append(group_options)
+        for g in group_options:
+            user_groups.append(g)
 
         uid = user.query.filter_by(username = username).first().id
         trackers = tracker.query.filter_by(u_id = uid).all()
@@ -158,7 +158,33 @@ def add_tracker():
             if t.group not in user_groups:
                 user_groups.append(t.group)
         
-        return redirect("add_tracker.html")
+        return render_template("add_tracker.html", group_options = user_groups)
+    else:
+        uid = user.query.filter_by(username = username).first().id
+        new_tracker = tracker(
+            name = request.form.get("name"),
+            option = request.form.get("type"),
+            group = request.form.get("group"),
+            description = request.form.get("description"),
+            u_id = uid
+        )
+        db.session.add(new_tracker)
+        db.session.commit()
+        return redirect(url_for("index"))
+
+@app.route("/log/<int:t_id>", methods = ["GET","POST"])
+def log(t_id):
+    if 'user' not in session:
+        return redirect(url_for('index'))
+    
+    if request.method == "GET":
+        current_tracker = tracker.query.filter_by(id = t_id).first()
+        return render_template("log.html", tracker = current_tracker)
+    else:
+        
+
+
+
 
 if __name__ == "__main__":
     app.debug = True
