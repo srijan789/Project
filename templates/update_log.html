@@ -7,15 +7,23 @@
 
 
 <div class="section">
-    <h1 class="title is-1">Log</h1>
+    <h1 class="title is-1">Update Log</h1>
   </div>
 
-  <form class="box" action="/log/{{tracker.id}}" method="POST" id="tracker_form">
+  <form class="box" action="/update_log/{{ulog.id}}" method="POST" id="updatelog_form">
 
         <div class="block">
           <div class="block">
             <label class="label">Time*</label>
-            <input type="datetime-local" name="datetime" class="is-primary" required>
+            <label class="radio">
+                <input type="radio" onclick="set()" name="choose" checked value="existing" />
+                {{ulog.timestamp}}
+              </label>
+              <label class="radio">
+                <input type="radio" name="choose" onclick="set()" value="new" />
+                Choose new time
+              </label>
+            <input type="datetime-local" name="datetime" id="dt" disabled value="tracker.timestamp" class="is-primary" required>
           </div>
         </div>
 
@@ -24,21 +32,21 @@
         <div class="field">
             <label class="label">Sets*</label>
             <div class="control">
-              <input class="input" type="number" name="value1" placeholder="Number of Sets" required>
+              <input class="input" type="number" name="value1" value="{{ulog.value_1}}" placeholder="Number of Sets" required>
             </div>
           </div>
 
           <div class="field">
             <label class="label">Reps*</label>
             <div class="control">
-              <input class="input" type="number" name="value2" placeholder="Number of Reps" required>
+              <input class="input" type="number" name="value2" value="{{ulog.value_2}}" placeholder="Number of Reps" required>
             </div>
           </div>
         
           <div class="field">
             <label class="label">Weight (Optional)</label>
             <div class="control">
-              <input class="input" type="number" name="weight" placeholder="Workout weight">
+              <input class="input" type="number" name="weight" value="{{ulog.weight}}" placeholder="Workout weight">
             </div>
           </div>
 
@@ -50,14 +58,14 @@
         <div class="field">
             <label class="label">Minutes*</label>
             <div class="control">
-              <input class="input" type="number" name="value1" placeholder="Number of Minutes" required>
+              <input class="input" type="number" name="value1" value="{{ulog.value_1}}" placeholder="Number of Minutes" required>
             </div>
           </div>
         
           <div class="field">
             <label class="label">Weight (Optional)</label>
             <div class="control">
-              <input class="input" type="number" name="weight" placeholder="Workout weight">
+              <input class="input" type="number" name="weight" value="{{ulog.weight}}" placeholder="Workout weight">
             </div>
           </div>
 
@@ -69,14 +77,14 @@
         <div class="field">
             <label class="label">Seconds*</label>
             <div class="control">
-              <input class="input" type="number" name="value1" placeholder="Number of Seconds" required>
+              <input class="input" type="number" name="value1" value="{{ulog.value_1}}" placeholder="Number of Seconds" required>
             </div>
           </div>
         
           <div class="field">
             <label class="label">Weight (Optional)</label>
             <div class="control">
-              <input class="input" type="number" name="weight" placeholder="Workout weight">
+              <input class="input" type="number" name="weight" value="{{ulog.weight}}" placeholder="Workout weight">
             </div>
           </div>
 
@@ -86,7 +94,7 @@
         <div class="field">
             <label class="label">Note (Optional)</label>
             <div class="control">
-              <input class="input" type="text" name="note" placeholder="Note">
+              <input class="input" type="text" name="note" value="{{ulog.note}}" placeholder="Note">
             </div>
           </div>
 
@@ -95,7 +103,7 @@
               <button type="submit" class="button is-link">Submit</button>
             </div>
             <div class="control">
-              <a href="/" class="button is-link is-light">Cancel</a>
+              <a href="/view_log/{{tracker.id}}" class="button is-link is-light">Cancel</a>
             </div>
           </div>
         </form>
@@ -121,7 +129,29 @@
         element.bulmaCalendar.on('select', function(datepicker) {
             console.log(datepicker.data.value());
         });
-    }</script>
+    }
 
+
+    var options = document.getElementsByName("choose");
+    
+        function set(){
+            var options = document.getElementsByName("choose");
+            var val = null;
+            for (var o of options){
+                if(o.checked == true){
+                    val = o.value
+                }
+            }
+    
+            if(val == "existing"){
+                var inp = document.getElementById('dt');
+                inp.disabled = true;
+            } else {
+                var inp = document.getElementById('dt');
+                inp.disabled = false;
+            }
+        }
+    
+    </script>
 
 {% endblock %}

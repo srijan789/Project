@@ -1,18 +1,19 @@
 {% extends "layout.html" %} {% block body %}
 
 <div class="section">
-  <h1 class="title is-1">Add a Tracker</h1>
+  <h1 class="title is-1">Update tracker</h1>
 </div>
 
-<form class="box" action="/add_tracker" method="POST" id="tracker_form">
+<form class="box" action="/update_tracker/{{tracker.id}}" method="POST" id="tracker_form">
   <div class="field">
-    <label class="label">Name of exercise</label>
+    <label class="label">Name of excercise</label>
     <div class="control">
       <input
         class="input"
         name="name"
         type="text"
         placeholder="Text input"
+        value="{{tracker.name}}"
         required
       />
     </div>
@@ -22,25 +23,26 @@
     <label class="label">Type</label>
     <div class="control" style="margin-left: auto; margin-right: auto">
       <label class="radio">
-        <input type="radio" name="type" value="Sets and Reps" required />
+        <input type="radio" name="type" value="Sets and Reps" {% if (tracker.option == "Sets and Reps") %} checked {% endif %} required disabled />
         Sets and Reps
       </label>
       <label class="radio">
-        <input type="radio" name="type" value="Minutes" />
+        <input type="radio" name="type" value="Minutes" {% if (tracker.option == "Minutes") %} checked {% endif %} disabled/>
         Minutes
       </label>
       <label class="radio">
-        <input type="radio" name="type" value="Seconds" />
+        <input type="radio" name="type" value="Seconds" {% if (tracker.option == "Seconds") %} checked {% endif %} disabled/>
         Seconds
       </label>
     </div>
   </div>
 
+
   <div class="field">
     <label class="label">Group</label>
     <div class="control">
       <label class="radio">
-        <input type="radio" onclick="set()" name="choose" value="existing" />
+        <input type="radio" onclick="set()" name="choose" value="existing" checked />
         Choose existing
       </label>
       <label class="radio">
@@ -52,10 +54,10 @@
 
   <div class="field">
     <div class="select block">
-      <select name="group" id="ddgroup" >
+      <select name="group" id="ddgroup"  >
         <option>Select dropdown</option>
         {% for group in group_options %}
-        <option value="{{group}}">{{group}}</option>
+        <option value="{{group}}" {% if (tracker.group == group) %} selected {% endif %}>{{group}}</option>
         {%endfor%}
       </select>
     </div>
@@ -66,8 +68,9 @@
         class="input"
         name="group"
         type="text"
-        placeholder="Name of Group"
+        placeholder="Name of group"
         required
+        disabled
       />
     </div>
 
@@ -82,6 +85,7 @@
         placeholder="Description"
         name="description"
         maxlength="250"
+        value="{{tracker.description}}"
       ></textarea>
     </div>
   </div>

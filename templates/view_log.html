@@ -1,0 +1,45 @@
+{% extends "layout.html" %} {% block body %}
+
+<div class="section">
+    <h1 class="title is-1">Logs for {{tname}}</h1>
+  </div>
+
+<div class="box">
+    <table class="table" , style="margin-left: auto; margin-right: auto">
+    
+        <thread>
+            <tr>
+              <th>Date and Time</th>
+              <th>Value 1</th>
+              <th>Value 2</th>
+              <th>Weight</th>
+              <th>note</th>
+              <th>Actions</th>
+            </tr>
+          </thread>
+        
+          {% for log in logs %}
+
+          <tr>
+              <td>{{log.timestamp}}</td>
+              <td>{{log.value_1}}</td>
+              <td>{{log.value_2}}</td>
+              <td>{{log.weight}}</td>
+              <td>{{log.note}}</td>
+              <td><a class="button is-warning" href="/update_log/{{log.id}}"
+                >Update</a
+              >
+              <a class="button is-danger" href="/delete_log/{{log.id}}"
+                >Delete</a
+              ></td>
+          </tr>
+
+          {% endfor %}
+    
+    
+    </table><a href="/" class="button is-link">Go back</a>
+</div>
+
+
+
+{% endblock %}
