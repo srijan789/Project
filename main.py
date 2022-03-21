@@ -1,14 +1,25 @@
 
-from tkinter import E
+from distutils.log import error
+from unicodedata import name
+from matplotlib import pyplot as plt
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 import copy
 
+from flask_restful import Resource
+from flask_restful import Api
+from flask_restful import fields
+from flask_restful import marshal_with
+from flask_restful import reqparse
+from flask import make_response
+
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__, template_folder="templates")
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.sqlite3"
 db = SQLAlchemy(app)
+api = Api(app)
 app.app_context().push()
 
 # Sessions
@@ -151,7 +162,7 @@ def dashboard():
 
     # Getting top 5 recent logs
     ulogs = db.session.execute(
-        'select log.timestamp, log.value_1, log.value_2, log.weight, log.note, tracker.name, tracker.option from log, tracker where log.t_id = tracker.id and log.t_id in (select t.id from user u, tracker t where t.u_id = u.id and u.id={uid}) order by log.id desc'.format(uid=uid))
+        'select log.timestamp, log.value_1, log.value_2, log.weight, log.note, tracker.name, tracker.option from log, tracker where log.t_id = tracker.id and log.t_id in (select t.id from user u, tracker t where t.u_id = u.id and u.id={uid}) order by log.id desc limit 5'.format(uid=uid))
 
     return render_template("dashboard.html", groups=groups, ulogs=ulogs)
 
@@ -284,12 +295,11 @@ def delete_log(lid):
     return redirect(url_for("view_log", tid=tid))
 
 
-@app.route("/update_log/<int:lid>", methods = ["GET","POST"])
+@app.route("/update_log/<int:lid>", methods=["GET", "POST"])
 def update_log(lid):
     if 'user' not in session:
         return redirect(url_for('index'))
 
-    
     ulog = log.query.filter_by(id=lid).first()
     utracker = tracker.query.filter_by(id=ulog.t_id).first()
     if request.method == "GET":
@@ -298,19 +308,164 @@ def update_log(lid):
     else:
         if request.form.get("choose") == 'existing':
             log.query.filter_by(id=lid).update({log.value_1: request.form.get("value1"),
-                log.value_2: request.form.get("value2"),
-                log.weight: request.form.get("weight"),
-                log.note: request.form.get("note")
-            })
+                                                log.value_2: request.form.get("value2"),
+                                                log.weight: request.form.get("weight"),
+                                                log.note: request.form.get(
+                                                    "note")
+                                                })
         else:
-            log.query.filter_by(id=lid).update({ log.timestamp: request.form.get("datetime"),
-                log.value_1: request.form.get("value1"),
-                log.value_2: request.form.get("value2"),
-                log.weight: request.form.get("weight"),
-                log.note: request.form.get("note")
-            })
+            log.query.filter_by(id=lid).update({log.timestamp: request.form.get("datetime"),
+                                                log.value_1: request.form.get("value1"),
+                                                log.value_2: request.form.get("value2"),
+                                                log.weight: request.form.get("weight"),
+                                                log.note: request.form.get(
+                                                    "note")
+                                                })
         db.session.commit()
-        return redirect(url_for("view_log", tid = utracker.id))
+        return redirect(url_for("view_log", tid=utracker.id))
+
+
+@app.route("/analyze_tracker/<int:tid>")
+def analyze_tracker(tid):
+    if 'user' not in session:
+        return redirect(url_for('index'))
+
+    utracker = tracker.query.filter_by(id=tid).first()
+    ulogs = log.query.filter_by(t_id=tid).all()
+
+    # plt.clf()
+
+    # total reps for sets and reps
+    if utracker.option == "Sets and Reps":
+        x_axis = []
+        y_axis = []
+        for l in ulogs[::-1]:
+            x_axis.append(l.timestamp.split("T")[0])
+            y_axis.append(l.value_1 * l.value_2)
+            plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
+            plt.xlabel("day")
+            plt.ylabel("total reps")
+
+    elif utracker.option == "Minutes":
+        x_axis = []
+        y_axis = []
+        for l in ulogs[::-1]:
+            x_axis.append(l.timestamp.split("T")[0])
+            y_axis.append(l.value_1)
+            plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
+            plt.xlabel("day")
+            plt.ylabel("Minutes")
+    else:
+        x_axis = []
+        y_axis = []
+        for l in ulogs[::-1]:
+            x_axis.append(l.timestamp.split("T")[0])
+            y_axis.append(l.value_1)
+            plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
+            plt.xlabel("day")
+            plt.ylabel("Seconds")
+
+    plt.savefig('static/myplot.png')
+    plt.close()
+    return render_template("analyze_tracker.html", tracker=utracker)
+
+# -------------Tracker API ------------------------------------------
+
+
+tracker_op = {
+    "id": fields.Integer,
+    "name": fields.String,
+    "option": fields.String,
+    "group": fields.String,
+    "description": fields.String,
+    "u_id": fields.Integer
+}
+
+
+class TrackerNotFound(HTTPException):
+    def __init__(self, status_code, error_msg):
+        self.response = make_response(error_msg, status_code, {
+                                      "Content-Type": "application/json"})
+
+
+create_tracker_parser = reqparse.RequestParser()
+create_tracker_parser.add_argument("name")
+create_tracker_parser.add_argument("u_id")
+create_tracker_parser.add_argument("type")
+create_tracker_parser.add_argument("description")
+create_tracker_parser.add_argument("group")
+
+update_tracker_parser = reqparse.RequestParser()
+update_tracker_parser.add_argument("name")
+update_tracker_parser.add_argument("description")
+update_tracker_parser.add_argument("group")
+
+
+class trackerAPI(Resource):
+
+    @marshal_with(tracker_op)
+    def get(self, id):
+        utrack = tracker.query.filter_by(id=id).first()
+        if utrack:
+            return utrack, 200
+        else:
+            raise TrackerNotFound(
+                status_code=404, error_msg="tracker not found")
+
+    @marshal_with(tracker_op)
+    def put(self, id):
+        args = update_tracker_parser.parse_args()
+        utrack = tracker.query.filter_by(id=id).first()
+        if utrack:
+            tracker.query.filter_by(id=id).update({tracker.name: args.get("name"),
+                                                   tracker.group: args.get("group"),
+                                                   tracker.description: args.get("description")})
+            db.session.commit()
+            utrack = tracker.query.filter_by(id=id).first()
+            return utrack, 200
+        else:
+            raise TrackerNotFound(
+                status_code=404, error_msg="tracker not found")
+
+    @marshal_with(tracker_op)
+    def delete(self, id):
+        utrack = tracker.query.filter_by(id=id).first()
+        if utrack:
+            tracker.query.filter_by(id=id).delete()
+            db.session.commit()
+            return utrack, 200
+        else:
+            raise TrackerNotFound(
+                status_code=404, error_msg="tracker not found")
+
+    @marshal_with(tracker_op)
+    def post(self):
+        args = create_tracker_parser.parse_args()
+        utrack = tracker(name =args.get('name'),
+                         u_id = args.get('u_id'),
+                         option = args.get('type'),
+                         group = args.get('group'),
+                         description = args.get('description'))
+        db.session.add(utrack)
+        db.session.commit()
+        return utrack, 200
+        
+
+
+api.add_resource(trackerAPI, "/api/tracker", "/api/tracker/<int:id>")
+
+
+#---------------------- Log API -----------------------------------------
+
+tracker_op = {
+    "id": fields.Integer,
+    "t_id": fields.Integer,
+    "timestamp": fields.String,
+    "value_1": fields.Integer,
+    "value_2": fields.String,
+    "weight": fields.Integer,
+    "note": fields.String
+}
 
 
 if __name__ == "__main__":

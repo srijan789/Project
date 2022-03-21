@@ -3,3 +3,4 @@ flask_sqlalchemy
 flask_restful
 flask_login
 flask_session
+matplotlib
