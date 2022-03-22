@@ -1,7 +1,6 @@
 
-from distutils.log import error
-from unicodedata import name
-from matplotlib import pyplot as plt
+
+from matplotlib import pyplot as plt, rc_params_from_file
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
@@ -462,10 +461,91 @@ tracker_op = {
     "t_id": fields.Integer,
     "timestamp": fields.String,
     "value_1": fields.Integer,
-    "value_2": fields.String,
-    "weight": fields.Integer,
+    "value_2": fields.Integer,
+    "weight": fields.String,
     "note": fields.String
 }
+
+class LogNotFound(HTTPException):
+    def __init__(self, status_code, error_msg):
+        self.response = make_response(error_msg, status_code, {
+                                      "Content-Type": "application/json"})
+
+create_log_parser = reqparse.RequestParser()
+create_log_parser.add_argument("t_id")
+create_log_parser.add_argument("timestamp")
+create_log_parser.add_argument("value1")
+create_log_parser.add_argument("value2")
+create_log_parser.add_argument("weight")
+create_log_parser.add_argument("note")
+
+update_log_parser = reqparse.RequestParser()
+update_log_parser.add_argument("timestamp")
+update_log_parser.add_argument("value1")
+update_log_parser.add_argument("value2")
+update_log_parser.add_argument("weight")
+update_log_parser.add_argument("note")
+
+class logAPI(Resource):
+
+    @marshal_with(tracker_op)
+    def get(self, id):
+        ulog = log.query.filter_by(id = id).first()
+        if ulog:
+            return ulog, 200
+        else:
+            raise LogNotFound(status_code=404, error_msg="could not find")
+    
+    @marshal_with(tracker_op)
+    def delete(self, id):
+        ulog = log.query.filter_by(id = id).first()
+        if ulog:
+            log.query.filter_by(id = id).delete()
+            db.session.commit()
+            return ulog, 200
+        else:
+            raise LogNotFound(status_code=404, error_msg="could not find")
+
+    @marshal_with(tracker_op)
+    def put(self, id):
+        args = update_log_parser.parse_args()
+        ulog = log.query.filter_by(id = id).first()
+        if ulog:
+            log.query.filter_by(id = id).update({
+                log.timestamp: args.get('timestamp'),
+                log.value_1: args.get('value1'),
+                log.value_2: args.get("value2"),
+                log.weight: args.get("weight"),
+                log.note: args.get("note")
+            })
+
+            db.session.commit()
+
+            ulog = log.query.filter_by(id = id).first()
+
+            return ulog, 200
+        else:
+            raise LogNotFound(status_code=404, error_msg="could not find")
+
+    @marshal_with(tracker_op)
+    def post(self):
+        args = create_log_parser.parse_args()
+        
+        ulog = log(
+            t_id = args.get("t_id"),
+            timestamp = args.get("timestamp"),
+            value_1 = args.get("value1"),
+            value_2 = args.get('value2'),
+            weight = args.get('weight'),
+            note = args.get('note')
+        )
+
+        db.session.add(ulog)
+        db.session.commit()
+
+        return ulog, 200
+
+api.add_resource(logAPI, "/api/log", "/api/log/<int:id>")
 
 
 if __name__ == "__main__":
