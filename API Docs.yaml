@@ -1,0 +1,634 @@
+_type: export
+__export_format: 4
+__export_date: 2022-03-22T09:33:36.226Z
+__export_source: insomnia.desktop.app:v2022.2.0
+resources:
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd24112d714
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd28c6ae142
+    modified: 1647886559384
+    created: 1647878460110
+    url: "{{ base_url }}/tracker"
+    name: Add a tracker
+    description: ""
+    method: POST
+    body: {}
+    parameters:
+      - name: u_id
+        disabled: false
+        value: "1"
+        id: pair_502522416b8545ebbdb9329b2922f601
+      - name: name
+        disabled: false
+        value: pull ups
+        id: pair_6d84cdf73dce433c8f9274ba411932bc
+      - name: type
+        disabled: false
+        value: Sets and Reps
+        id: pair_aa1dad3d81094cc6a1685c988ce931e1
+      - name: group
+        disabled: false
+        value: Cardio
+        id: pair_126f11b0128f433a953764827ab81bc9
+      - name: description
+        disabled: true
+        value: string
+        id: pair_6b81a48ae4a042068a621cb365278dd0
+    headers: []
+    authentication: {}
+    metaSortKey: -1647878460110
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_wrk_8ed64a37d0694238b8366d483daa6fd28c6ae142
+    parentId: wrk_8ed64a37d0694238b8366d483daa6fd2
+    modified: 1647878460115
+    created: 1647878460115
+    name: tracker
+    description: requests related to the tracker
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1647878460115
+    _type: request_group
+  - _id: wrk_8ed64a37d0694238b8366d483daa6fd2
+    parentId: null
+    modified: 1647797296728
+    created: 1647797296728
+    name: api-spec.yaml
+    description: ""
+    scope: design
+    _type: workspace
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd23de3e628
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd28c6ae142
+    modified: 1647883295875
+    created: 1647878460107
+    url: "{{ base_url }}/tracker/{{ id }}"
+    name: get a tracker
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1647878460107
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd2d958d2f9
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd28c6ae142
+    modified: 1647886048302
+    created: 1647878460104
+    url: "{{ base_url }}/tracker/{{ id }}"
+    name: update a tracker
+    description: ""
+    method: PUT
+    body: {}
+    parameters:
+      - name: name
+        disabled: false
+        value: curls
+        id: pair_4d1a26d260bf407293eb0e6b9fa5637c
+      - name: group
+        disabled: false
+        value: Armszz
+        id: pair_a75a444bf41d4cf684a66e748c262d94
+      - name: description
+        disabled: false
+        value: lolz
+        id: pair_d2a2495598d64c25950643a0c2129a41
+    headers: []
+    authentication: {}
+    metaSortKey: -1647878460104
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd215fca0f7
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd28c6ae142
+    modified: 1647886624275
+    created: 1647878460100
+    url: "{{ base_url }}/tracker/{{ id }}"
+    name: delete a tracker
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1647878460100
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd2dd035981
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd27babc233
+    modified: 1647941527814
+    created: 1647906373552
+    url: "{{ base_url }}/log/{{ id }}"
+    name: update a given log
+    description: ""
+    method: PUT
+    body: {}
+    parameters:
+      - name: timestamp
+        disabled: false
+        value: string
+        id: pair_fdf1691f3ffa4077a3b306620db9a16f
+      - name: value1
+        disabled: false
+        value: "0"
+        id: pair_adc8f40ca65b4146aa02d98c22d0fc8e
+      - name: value2
+        disabled: true
+        value: "0"
+        id: pair_cd0c9f8dbd814b578fc2a04cdfa3d9ee
+      - name: weight
+        disabled: true
+        value: "0"
+        id: pair_c2c2c1bacd40407cbaf8c62a759720f6
+      - name: note
+        disabled: true
+        value: string
+        id: pair_39f69edd75db4d37a489f6596775efd0
+    headers: []
+    authentication: {}
+    metaSortKey: -1647906373552
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_wrk_8ed64a37d0694238b8366d483daa6fd27babc233
+    parentId: wrk_8ed64a37d0694238b8366d483daa6fd2
+    modified: 1647878460112
+    created: 1647878460112
+    name: log
+    description: requests related to logs
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1647878460112
+    _type: request_group
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd2de9d1ff4
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd27babc233
+    modified: 1647906758657
+    created: 1647906373549
+    url: "{{ base_url }}/log/{{ 12 }}"
+    name: deletes a log
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1647906373549
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd2450fc1e0
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd27babc233
+    modified: 1647906735409
+    created: 1647906373544
+    url: "{{ base_url }}/log"
+    name: deletes a log
+    description: ""
+    method: POST
+    body: {}
+    parameters:
+      - name: t_id
+        disabled: false
+        value: "4"
+        id: pair_435f69887b6146088f36b32c38289880
+      - name: timestamp
+        disabled: false
+        value: 2022-03-21T10:23
+        id: pair_1c1427522b1a4d519c5f560f41c1ca18
+      - name: value1
+        disabled: false
+        value: "22"
+        id: pair_6152e856ef6b46bf9daa0a040120ed6a
+      - name: value2
+        disabled: false
+        value: "32"
+        id: pair_8c318494acdf45ebb068d70b5e8d669a
+      - name: weight
+        disabled: true
+        value: "0"
+        id: pair_585e67248f6e456487f44da64462aa0d
+      - name: note
+        disabled: true
+        value: string
+        id: pair_596debce765145b0a8df25ee7bd37350
+    headers: []
+    authentication: {}
+    metaSortKey: -1647906373544
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_wrk_8ed64a37d0694238b8366d483daa6fd25a1e2a96
+    parentId: fld_wrk_8ed64a37d0694238b8366d483daa6fd27babc233
+    modified: 1647906627299
+    created: 1647878460096
+    url: "{{ base_url }}/log/{{11 }}"
+    name: get a log given its id
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1647878460096
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_83800d0c072daa335010647b7911203c86abf0d2
+    parentId: wrk_8ed64a37d0694238b8366d483daa6fd2
+    modified: 1647797296737
+    created: 1647797296737
+    name: Base Environment
+    data:
+      base_url: "{{ scheme }}://{{ host }}{{ base_path }}"
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1647797296737
+    _type: environment
+  - _id: jar_83800d0c072daa335010647b7911203c86abf0d2
+    parentId: wrk_8ed64a37d0694238b8366d483daa6fd2
+    modified: 1647797296742
+    created: 1647797296742
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_2633a00d8b5b4c2fa04e9022f805c21f
+    parentId: wrk_8ed64a37d0694238b8366d483daa6fd2
+    modified: 1647941533980
+    created: 1647797296730
+    fileName: api-spec.yaml
+    contents: >+
+      openapi: 3.0.1
+
+      info:
+        title: Personal workout tracker
+        version: 1.0.0
+        description: Track your workouts using this tracker
+      servers:
+        - url: http://127.0.0.1:5000/api
+      tags:
+        - name: tracker
+          description: requests related to the tracker
+        - name: log
+          description: requests related to the logs
+      paths:
+        /tracker:
+          post:
+            summary: Add a tracker
+            description: Add a tracker for a given user id
+            operationId: ''
+            parameters:
+              - name: u_id
+                in: query
+                description: User's id
+                required: true
+                schema:
+                  type: number
+                  format: integer
+                example: 2
+              - name: name
+                in: query
+                description: name of tracker
+                required: true
+                schema:
+                  type: string
+                example: Bicep curls
+              - name: type
+                in: query
+                description: Type of tracker. Either 'Sets and Reps', 'Minutes', or 'Seconds'
+                required: true
+                schema:
+                  type: string
+                example: Sets and Reps
+              - name: group
+                in: query
+                description: Group of tracker
+                required: true
+                schema:
+                  type: string
+                example: Arms
+              - name: description
+                in: query
+                description: description of tracker
+                required: false
+                schema:
+                  type: string
+                example: Bicep curls
+            responses:
+              '200':
+                description: all good
+            tags:
+              - tracker
+        /tracker/{id}:
+          get:
+            summary: get a tracker
+            description: get a tracker for a given tracker id
+            operationId: "gettracker"
+            parameters:
+              - name: id
+                in: path
+                description: Tracker id
+                required: true
+                schema:
+                  type: number
+                  format: integer
+                example: 2
+            responses:
+              '200':
+                description: all good
+            tags:
+              - tracker
+          put:
+            summary: update a tracker
+            description: update a tracker for a given tracker id, cannot change tracker type
+            operationId: "updatetracker"
+            parameters:
+              - name: id
+                in: path
+                description: Tracker id
+                required: true
+                schema:
+                  type: number
+                  format: integer
+                example: 2
+              - name: name
+                in: query
+                description: name of tracker
+                required: true
+                schema:
+                  type: string
+                example: Bicep curls
+              - name: group
+                in: query
+                description: Group of tracker
+                required: true
+                schema:
+                  type: string
+                example: Arms
+              - name: description
+                in: query
+                description: description of tracker
+                required: false
+                schema:
+                  type: string
+                example: Bicep curls
+            responses:
+              '200':
+                description: all good
+            tags:
+              - tracker
+          delete:
+            summary: delete a tracker
+            description: delete a tracker
+            operationId: 'deletetracker'
+            parameters:
+              - name: id
+                in: path
+                description: Tracker id
+                required: true
+                schema:
+                  type: number
+                  format: integer
+                example: 2
+            responses:
+              default:
+                description: Default error sample response
+            tags:
+              - tracker
+
+        /log/{id}:
+          get:
+            summary: get a log given its id
+            description: ''
+            operationId: 'getlog'
+            parameters:
+              - name: id
+                in: path
+                description: log id
+                required: true
+                schema:
+                  type: number
+                  format: integer
+                example: 2
+            responses:
+              default:
+                description: Default error sample response
+            tags:
+              - log
+              
+              
+          put:
+            summary: update a given log
+            description: ''
+            operationId: 'updatelog'
+            parameters:
+              - name: id
+                in: path
+                description: log id
+                required: true
+                schema:
+                  type: integer
+                example: 2
+                
+              - name: timestamp
+                in: query
+                description: timestamp
+                required: true
+                schema:
+                  type: string
+                  format: dd-mm-yyyyT--:-- 
+                example: 2022-03-18T16:52
+                
+              - name: value1
+                in: query
+                description: value for value1
+                required: true
+                schema:
+                  type: integer
+                example: 13
+                
+              - name: value2
+                in: query
+                description: value for value2 (only for sets and reps)
+                required: false
+                schema:
+                  type: integer
+                example: 13
+                
+              - name: weight
+                in: query
+                description: value for weight
+                required: false
+                schema:
+                  type: integer
+                example: 13
+                
+              - name: note
+                in: query
+                description: note
+                required: false
+                schema:
+                  type: string
+                example: "something"
+                
+            responses:
+              default:
+                description: Default error sample response
+            tags:
+              - log
+        
+        
+          delete:
+            summary: deletes a log
+            description: ''
+            operationId: 'deletelog'
+            parameters:
+              - name: id
+                in: path
+                description: log id
+                required: true
+                schema:
+                  type: integer
+                example: 2
+            responses:
+              default:
+                description: Default error sample response
+            tags:
+              - log
+        /log:
+          post:
+            summary: deletes a log
+            description: ''
+            operationId: 'createlog'
+            parameters:
+              - name: t_id
+                in: query
+                description: tracker id
+                required: true
+                schema:
+                  type: integer
+                example: 2
+                
+              - name: timestamp
+                in: query
+                description: tracker id
+                required: true
+                schema:
+                  type: string
+                  format: dd-mm-yyyyT--:-- 
+                example: 2022-03-18T16:52
+              
+              - name: value1
+                in: query
+                description: value for value1
+                required: true
+                schema:
+                  type: integer
+                example: 13
+                
+              - name: value2
+                in: query
+                description: value for value2 (only for sets and reps)
+                required: false
+                schema:
+                  type: integer
+                example: 13
+                
+              - name: weight
+                in: query
+                description: value for weight
+                required: false
+                schema:
+                  type: integer
+                example: 13
+                
+              - name: note
+                in: query
+                description: note
+                required: false
+                schema:
+                  type: string
+                example: "something"
+                
+            responses:
+              default:
+                description: Default error sample response
+            tags:
+              - log
+          
+          
+          
+    contentType: yaml
+    _type: api_spec
+  - _id: uts_66d6869b18c147d198dda38c1c678681
+    parentId: wrk_8ed64a37d0694238b8366d483daa6fd2
+    modified: 1647878462964
+    created: 1647878462964
+    name: New Suite
+    _type: unit_test_suite
+  - _id: env_env_83800d0c072daa335010647b7911203c86abf0d2_sub
+    parentId: env_83800d0c072daa335010647b7911203c86abf0d2
+    modified: 1647878460117
+    created: 1647878460117
+    name: OpenAPI env
+    data:
+      scheme: http
+      base_path: /api
+      host: 127.0.0.1:5000
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1647878460117
+    _type: environment
+  - _id: ut_5b1b60f85dc24632a8f666e9f6d33e64
+    parentId: uts_66d6869b18c147d198dda38c1c678681
+    modified: 1647878472397
+    created: 1647878468841
+    requestId: req_wrk_8ed64a37d0694238b8366d483daa6fd24112d714
+    name: Returns 200
+    code: |-
+      const response1 = await insomnia.send();
+      expect(response1.status).to.equal(200);
+    _type: unit_test

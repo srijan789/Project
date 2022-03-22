@@ -1,1 +1,1 @@
-# use python main.py to start the application. 
+# use python main.py to start the application while in venv

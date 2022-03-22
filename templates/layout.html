@@ -17,8 +17,11 @@
             <nav class="navbar">
                 <div class="container">
                     <div id="navbarMenuHeroA" class="navbar-menu">
-                        
+                        {% if session['user'] %}
+                            <h1 class="navbar-brand">Hi, {{session['user']}}</h1>
+                            {% endif %}
                         <div class="navbar-end">
+                            
                             <a href="{{ url_for('index') }}" class="navbar-item">
                                 Home
                             </a>

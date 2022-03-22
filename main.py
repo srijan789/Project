@@ -1,6 +1,7 @@
 
 
-from matplotlib import pyplot as plt, rc_params_from_file
+from matplotlib import pyplot as plt
+import matplotlib.dates
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
@@ -338,31 +339,34 @@ def analyze_tracker(tid):
     if utracker.option == "Sets and Reps":
         x_axis = []
         y_axis = []
-        for l in ulogs[::-1]:
+        for l in ulogs:
             x_axis.append(l.timestamp.split("T")[0])
             y_axis.append(l.value_1 * l.value_2)
-            plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
-            plt.xlabel("day")
-            plt.ylabel("total reps")
-
+        x_axis = matplotlib.dates.datestr2num(x_axis)
+        plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
+        plt.xlabel("day")
+        plt.ylabel("total reps")
+        
     elif utracker.option == "Minutes":
         x_axis = []
         y_axis = []
-        for l in ulogs[::-1]:
+        for l in ulogs:
             x_axis.append(l.timestamp.split("T")[0])
             y_axis.append(l.value_1)
-            plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
-            plt.xlabel("day")
-            plt.ylabel("Minutes")
+        x_axis = matplotlib.dates.datestr2num(x_axis)
+        plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
+        plt.xlabel("day")
+        plt.ylabel("Minutes")
     else:
         x_axis = []
         y_axis = []
-        for l in ulogs[::-1]:
+        for l in ulogs:
             x_axis.append(l.timestamp.split("T")[0])
             y_axis.append(l.value_1)
-            plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
-            plt.xlabel("day")
-            plt.ylabel("Seconds")
+        x_axis = matplotlib.dates.datestr2num(x_axis)
+        plt.plot_date(x_axis, y_axis, color='Teal', xdate=True)
+        plt.xlabel("day")
+        plt.ylabel("Seconds")
 
     plt.savefig('static/myplot.png')
     plt.close()
@@ -379,7 +383,7 @@ tracker_op = {
     "description": fields.String,
     "u_id": fields.Integer
 }
-
+    
 
 class TrackerNotFound(HTTPException):
     def __init__(self, status_code, error_msg):
