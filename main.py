@@ -553,5 +553,4 @@ api.add_resource(logAPI, "/api/log", "/api/log/<int:id>")
 
 
 if __name__ == "__main__":
-    app.debug = True
-    app.run()
+    app.run(host="0.0.0.0")
