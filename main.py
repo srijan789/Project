@@ -16,6 +16,9 @@ from flask import make_response
 
 from werkzeug.exceptions import HTTPException
 
+#---------------------- Initializations ---------------------------------------
+
+
 app = Flask(__name__, template_folder="templates")
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.sqlite3"
 db = SQLAlchemy(app)
@@ -27,10 +30,13 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Initial workout group options
 group_options = ['Chest', 'Triceps', 'Abs',
                  'Back', 'Biceps', 'Shoulders', 'Cardio']
 
 
+
+#------------------------------ MODEL DEFINITION -------------------------------------
 class user(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True,
@@ -69,6 +75,8 @@ class log(db.Model):
     weight = db.Column(db.Integer)
     note = db.Column(db.String)
 
+
+#---------------------------- CONTROLLERS ------------------------------------------
 
 @app.route("/logout")
 def logout():
@@ -372,7 +380,7 @@ def analyze_tracker(tid):
     plt.close()
     return render_template("analyze_tracker.html", tracker=utracker)
 
-# -------------Tracker API ------------------------------------------
+#------------------------------------ Tracker API ------------------------------------------
 
 
 tracker_op = {
@@ -458,7 +466,7 @@ class trackerAPI(Resource):
 api.add_resource(trackerAPI, "/api/tracker", "/api/tracker/<int:id>")
 
 
-#---------------------- Log API -----------------------------------------
+#----------------------------------- Log API -----------------------------------------
 
 tracker_op = {
     "id": fields.Integer,
@@ -551,6 +559,7 @@ class logAPI(Resource):
 
 api.add_resource(logAPI, "/api/log", "/api/log/<int:id>")
 
+#---------------------------- RUN ---------------------------------------
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
